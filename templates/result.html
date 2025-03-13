@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prediction Result - Mood Prediction</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            background-color: #007bff;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .navbar a:hover {
+            text-decoration: underline;
+        }
+
+        /* Container Styles */
+        .container {
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 500px;
+            margin: 50px auto;
+        }
+
+        h1, h2 {
+            color: #007bff;
+            text-align: center;
+        }
+
+        h3 {
+            color: #555;
+            margin-top: 20px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 8px;
+        }
+
+        .feature-list, .prob-list {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .feature-list li, .prob-list li {
+            margin: 10px 0;
+            padding: 8px;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+        }
+
+        .footer {
+            margin-top: 30px;
+            font-size: 14px;
+            color: #777;
+            text-align: center;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 20px;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .status {
+            font-weight: bold;
+            padding: 3px 8px;
+            border-radius: 3px;
+        }
+
+        .overfit {
+            background-color: #ffe6e6;
+            color: #d9534f;
+        }
+
+        .underfit {
+            background-color: #fff3cd;
+            color: #ff9800;
+        }
+
+        .good-fit {
+            background-color: #d4edda;
+            color: #28a745;
+        }
+
+        .mood-card {
+            background-color: #e6f2ff;
+            border-left: 5px solid #007bff;
+            padding: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+            border-radius: 4px;
+        }
+
+        .mood-label {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 0;
+        }
+
+        .model-metrics {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+        }
+
+        .metric {
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            background-color: #f9f9f9;
+            margin: 0 5px;
+            border-radius: 4px;
+        }
+
+        .metric-label {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .metric-value {
+            font-size: 16px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <div class="navbar">
+        <a href="/">Home</a>
+        <a href="/dataset">Dataset</a>
+        <a href="/models">Models</a>
+    </div>
+
+    <div class="container">
+        <h1>Mood Prediction Results</h1>
+        
+        <div class="mood-card">
+            <p class="mood-label">{{ mood }}</p>
+        </div>
+
+        <h3>Audio Features</h3>
+        <ul class="feature-list">
+            <li>Energy: {{ energy }}</li>
+            <li>Valence: {{ valence }}</li>
+            <li>Tempo: {{ tempo }} BPM</li>
+            <li>Loudness: {{ loudness }} dB</li>
+        </ul>
+        
+        <h3>Prediction Probabilities</h3>
+        <ul class="prob-list">
+            {% for mood, prob in probabilities.items() %}
+                <li>{{ mood }}: {{ prob }}</li>
+            {% endfor %}
+        </ul>
+        
+        <h3>Model Performance</h3>
+        <div class="model-metrics">
+            <div class="metric">
+                <div class="metric-label">Training Accuracy</div>
+                <div class="metric-value">{{ train_accuracy }}</div>
+            </div>
+            <div class="metric">
+                <div class="metric-label">Test Accuracy</div>
+                <div class="metric-value">{{ test_accuracy }}</div>
+            </div>
+            <div class="metric">
+                <div class="metric-label">Status</div>
+                <div class="metric-value">
+                    <span class="status {{ overfit_status.lower().replace(' ', '-') }}">{{ overfit_status }}</span>
+                </div>
+            </div>
+        </div>
+        
+        <button onclick="window.location.href='/'">Analyze Another Song</button>
+        
+        <div class="footer">
+            <p>Made with ❤️ by Krupp & Team</p>
+        </div>
+    </div>
+</body>
+</html>

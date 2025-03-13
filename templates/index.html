@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Upload Song - Mood Prediction</title>
+        <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            background-color: #007bff;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .navbar a:hover {
+            text-decoration: underline;
+        }
+
+        /* Container Styles */
+        .container {
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            text-align: center;
+            margin: 50px auto;
+        }
+
+        h1 {
+            color: #007bff;
+        }
+
+        input[type="file"] {
+            padding: 10px;
+            margin: 10px 0;
+            font-size: 16px;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+            width: 100%;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .footer {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #777;
+        }
+    </style>
+    </head>
+    <body>
+
+        <!-- Navigation Bar -->
+        <div class="navbar">
+            <a href="/">Home</a>
+            <a href="dataset">Dataset</a>
+            <a href="models">Models</a>
+        </div>
+
+        <div class="container">
+            <h1>Upload Your Song</h1>
+            <form action="/upload" method="POST" enctype="multipart/form-data">
+                <label for="file">Choose an audio file (MP3/WAV):</label>
+                <input type="file" name="file" accept=".mp3,.wav"
+                    required><br><br>
+                <button type="submit">Upload and Predict Mood</button>
+            </form>
+            <div class="footer">
+                <p>Made with ❤️ by Krupp & Team</p>
+            </div>
+        </div>
+
+    </body>
+</html>

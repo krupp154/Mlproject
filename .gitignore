@@ -1,0 +1,43 @@
+# Python
+__pycache__/
+*.py[cod]
+*.so
+*.log
+*.env
+*.sqlite3
+
+# Virtual Environment
+venv/
+env/
+*.venv
+
+# IDE/Editor Files
+.vscode/
+.idea/
+*.iml
+*.sublime-workspace
+
+# OS Files
+.DS_Store
+Thumbs.db
+
+# Data Files
+uploads/
+*.csv
+*.xlsx
+*.json  # Exclude temporary JSON files
+*.pkl   # Exclude trained models
+models/
+!models/README.md  # Keep model setup instructions
+
+# Flask & Gunicorn
+instance/
+*.pid
+*.sock
+
+# Node (if frontend exists)
+node_modules/
+
+# Logs
+*.log
+logs/
