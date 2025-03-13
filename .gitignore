@@ -23,7 +23,6 @@ Thumbs.db
 
 # Data Files
 uploads/
-*.csv
 *.xlsx
 *.json  # Exclude temporary JSON files
 *.pkl   # Exclude trained models
