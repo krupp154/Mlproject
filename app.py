@@ -34,7 +34,7 @@ except FileNotFoundError:
 # Load dataset for evaluation (optional)
 X_train, X_test, y_train, y_test = None, None, None, None
 try:
-    data = pd.read_csv('song_mood_data_expanded.csv')
+    data = pd.read_csv('dataset/song_mood_data_expanded.csv')
     if data['Valence'].dtype == 'object':
         data['Valence'] = data['Valence'].str.strip('[]').astype(float)
     X = data[['Energy', 'Valence', 'Tempo', 'Loudness']].values
@@ -120,6 +120,11 @@ def upload():
     mood_probs = {label_encoder.inverse_transform([i])[0]: f"{prob:.2%}" 
                   for i, prob in enumerate(probabilities)}
 
+    # Debugging statements
+    logging.info(f"Model: {model}")
+    logging.info(f"X_train: {X_train}")
+    logging.info(f"X_test: {X_test}")
+
     train_accuracy, test_accuracy, overfit_status = evaluate_model_fit()
     os.remove(file_path)
 
@@ -133,7 +138,6 @@ def upload():
                           train_accuracy=train_accuracy,
                           test_accuracy=test_accuracy,
                           overfit_status=overfit_status)
-
 @app.route('/models')
 def show_models():
     # Load saved model results from JSON file

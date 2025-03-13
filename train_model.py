@@ -102,6 +102,6 @@ def train_and_evaluate_models(X, y):
 
     return results
 if __name__ == '__main__':
-    data_file = 'song_mood_data_expanded.csv'
+    data_file = 'dataset/song_mood_data_expanded.csv'
     X, y = load_and_prepare_data(data_file)
     train_and_evaluate_models(X, y)

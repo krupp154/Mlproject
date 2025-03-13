@@ -23,6 +23,7 @@ Thumbs.db
 
 # Data Files
 uploads/
+dataset/
 *.csv
 *.xlsx
 *.json  # Exclude temporary JSON files
