@@ -23,12 +23,10 @@ Thumbs.db
 
 # Data Files
 uploads/
-dataset/
 *.csv
 *.xlsx
 *.json  # Exclude temporary JSON files
 *.pkl   # Exclude trained models
-models/
 !models/README.md  # Keep model setup instructions
 
 # Flask & Gunicorn
