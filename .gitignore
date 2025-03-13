@@ -1,41 +1,22 @@
 # Python
 __pycache__/
 *.py[cod]
-*.so
-*.log
-*.env
-*.sqlite3
+*$py.class
 
 # Virtual Environment
 venv/
 env/
-*.venv
 
-# IDE/Editor Files
+# IDE
 .vscode/
 .idea/
-*.iml
-*.sublime-workspace
 
-# OS Files
-.DS_Store
-Thumbs.db
-
-# Data Files
+# Uploads
 uploads/
-*.xlsx
-*.json  # Exclude temporary JSON files
-*.pkl   # Exclude trained models
-!models/README.md  # Keep model setup instructions
 
-# Flask & Gunicorn
-instance/
-*.pid
-*.sock
+# Sensitive Data
+*.env
+*.key
 
-# Node (if frontend exists)
-node_modules/
-
-# Logs
-*.log
-logs/
+# Large Files
+*.pkl  # Exclude if models are too large, but include if necessary for deployment
