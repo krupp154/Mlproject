@@ -1,3 +1,4 @@
+import json
 import streamlit as st
 import librosa
 import numpy as np
@@ -139,7 +140,7 @@ st.header("Model Results")
 if st.button("Load Model Results"):
     try:
         with open('models/model_results.json', 'r') as f:
-            results = st.json.load(f)
+            results = json.load(f)
         st.write("**Model Results:**")
         st.write(results)
     except FileNotFoundError:
