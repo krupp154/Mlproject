@@ -1,5 +1,4 @@
-import json
-from flask import Flask, request, render_template, jsonify
+import streamlit as st
 import librosa
 import numpy as np
 import joblib
@@ -12,7 +11,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from train_model import load_and_prepare_data, train_and_evaluate_models
 
-app = Flask(__name__)
+# Set up logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 # Ensure directories exist
@@ -91,66 +90,57 @@ def extract_features(file_path):
         logging.error(traceback.format_exc())
         return None
 
-@app.route('/')
-def home():
-    return render_template('index.html')
+# Streamlit app
+st.title("Mood Prediction App")
 
-@app.route('/dataset')
-def dataset():
-    return render_template('dataset.html')
-
-@app.route('/upload', methods=['POST'])
-def upload():
-    if 'file' not in request.files or request.files['file'].filename == '':
-        return jsonify({"error": "No selected file"}), 400
-
-    file = request.files['file']
-    file_path = os.path.join('uploads', file.filename)
-    file.save(file_path)
-
+# File uploader
+uploaded_file = st.file_uploader("Upload an audio file", type=["wav", "mp3"])
+if uploaded_file is not None:
+    file_path = os.path.join('uploads', uploaded_file.name)
+    with open(file_path, "wb") as f:
+        f.write(uploaded_file.getbuffer())
+    
     features = extract_features(file_path)
     if features is None:
+        st.error("Feature extraction failed. Please try another file.")
+    else:
+        features_scaled = scaler.transform(np.array(features).reshape(1, -1))
+        prediction = model.predict(features_scaled)[0]
+        mood = label_encoder.inverse_transform([prediction])[0]
+        probabilities = model.predict_proba(features_scaled)[0]
+        mood_probs = {label_encoder.inverse_transform([i])[0]: f"{prob:.2%}" 
+                      for i, prob in enumerate(probabilities)}
+        
+        train_accuracy, test_accuracy, overfit_status = evaluate_model_fit()
+        
+        st.write(f"**Predicted Mood:** {mood}")
+        st.write(f"**Energy:** {features[0]:.4f}")
+        st.write(f"**Valence:** {features[1]:.4f}")
+        st.write(f"**Tempo:** {features[2]:.1f}")
+        st.write(f"**Loudness:** {features[3]:.2f}")
+        st.write("**Mood Probabilities:**")
+        st.write(mood_probs)
+        st.write(f"**Train Accuracy:** {train_accuracy}")
+        st.write(f"**Test Accuracy:** {test_accuracy}")
+        st.write(f"**Model Fit Status:** {overfit_status}")
+        
         os.remove(file_path)
-        return jsonify({"error": "Feature extraction failed"}), 500
 
-    features_scaled = scaler.transform(np.array(features).reshape(1, -1))
-    prediction = model.predict(features_scaled)[0]
-    mood = label_encoder.inverse_transform([prediction])[0]
-    probabilities = model.predict_proba(features_scaled)[0]
-    mood_probs = {label_encoder.inverse_transform([i])[0]: f"{prob:.2%}" 
-                  for i, prob in enumerate(probabilities)}
-
-    # Debugging statements
-    logging.info(f"Model: {model}")
-    logging.info(f"X_train: {X_train}")
-    logging.info(f"X_test: {X_test}")
-
+# Model evaluation section
+st.header("Model Evaluation")
+if st.button("Evaluate Model Fit"):
     train_accuracy, test_accuracy, overfit_status = evaluate_model_fit()
-    os.remove(file_path)
+    st.write(f"**Train Accuracy:** {train_accuracy}")
+    st.write(f"**Test Accuracy:** {test_accuracy}")
+    st.write(f"**Model Fit Status:** {overfit_status}")
 
-    return render_template('result.html',
-                          mood=mood,
-                          energy=f"{features[0]:.4f}",
-                          valence=f"{features[1]:.4f}",
-                          tempo=f"{features[2]:.1f}",
-                          loudness=f"{features[3]:.2f}",
-                          probabilities=mood_probs,
-                          train_accuracy=train_accuracy,
-                          test_accuracy=test_accuracy,
-                          overfit_status=overfit_status)
-@app.route('/models')
-def show_models():
-    # Load saved model results from JSON file
+# Load and display model results
+st.header("Model Results")
+if st.button("Load Model Results"):
     try:
         with open('models/model_results.json', 'r') as f:
-            results = json.load(f)
-        logging.info("✅ Model results loaded successfully!")
+            results = st.json.load(f)
+        st.write("**Model Results:**")
+        st.write(results)
     except FileNotFoundError:
-        logging.error("❌ Model results file not found. Please train the models first.")
-        results = {}
-
-    return render_template('models.html', results=results)
-
-if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 5000))
-    app.run(host='0.0.0.0', port=port)
+        st.error("Model results file not found. Please train the models first.")
