@@ -4,7 +4,8 @@ scikit-learn==1.4.0
 scipy==1.12.0
 matplotlib==3.8.2
 seaborn==0.13.0
-tensorflow==2.16.0  # Or torch if you prefer PyTorch
+tensorflow==2.16.0
+ # Or torch if you prefer PyTorch
 keras==2.16.0
 torch==2.2.0  # Optional, for PyTorch-based models
 xgboost==2.0.3
