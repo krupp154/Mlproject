@@ -1,22 +1,35 @@
-# Python
+# Python files
+*.pyc
+*.pyo
+*.pyd
 __pycache__/
-*.py[cod]
-*$py.class
+*.sqlite3
 
-# Virtual Environment
-venv/
-env/
+# Environment variables
+.env
+*.env
 
-# IDE
+# IDE settings
 .vscode/
-.idea/
+*.code-workspace
 
-# Uploads
+# Deployment-specific
+.vercel/
+runtime.txt
+
+# Log files
+*.log
+logs/
+
+# Uploads (optional)
 uploads/
 
-# Sensitive Data
-*.env
-*.key
+# Model files (optional - if large models are regenerated easily)
+models/
 
-# Large Files
-*.pkl  # Exclude if models are too large, but include if necessary for deployment
+# Node modules (if you accidentally install frontend packages)
+node_modules/
+
+# Cache and system files
+.DS_Store
+Thumbs.db
